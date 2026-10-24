@@ -1,0 +1,15 @@
+{
+  "name": "my-project-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static HTML/CSS site deployed to GitHub Pages with GitHub Actions",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/test.mjs",
+    "serve": "npx --yes serve dist"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
