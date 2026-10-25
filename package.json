@@ -1,13 +1,15 @@
 {
-  "name": "my-project-site",
+  "name": "pages-starter",
   "version": "1.0.0",
   "private": true,
-  "description": "Static HTML/CSS site deployed to GitHub Pages with GitHub Actions",
+  "description": "A starter for static HTML and CSS sites, built, tested and deployed to GitHub Pages with GitHub Actions",
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node scripts/test.mjs",
-    "serve": "npx --yes serve dist"
+    "check": "npm run build && npm test",
+    "serve": "npx --yes serve dist",
+    "start": "npm run build && npm run serve"
   },
   "engines": {
     "node": ">=20"

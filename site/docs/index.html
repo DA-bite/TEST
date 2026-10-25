@@ -1,38 +1,65 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Docs - My Project</title>
-  <meta name="description" content="Documentation for My Project.">
-  <link rel="stylesheet" href="../style.css">
+  <!-- @include head -->
+  <title>Documentation - Pages Starter</title>
+  <meta name="description" content="Guides for publishing a static HTML and CSS site to GitHub Pages with GitHub Actions: setup, the pipeline, customization and troubleshooting.">
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="../">My Project</a>
-    <nav>
-      <a href="../">Home</a>
-      <a href="./">Docs</a>
-    </nav>
-  </header>
+<!-- @include header -->
 
-  <main>
+<div class="docs">
+  <!-- @include docs-nav -->
+
+  <main id="main" class="docs-content">
     <h1>Documentation</h1>
+    <p class="lede">Everything you need to publish a static site to GitHub Pages and keep it deploying on its own.</p>
 
-    <h2 id="getting-started">Getting started</h2>
-    <p>Edit the files in the <code>site/</code> folder, commit, and push to <code>main</code>. The workflow does the rest.</p>
+    <ul class="cards">
+      <li><a href="{{root}}docs/getting-started/"><strong>Getting started</strong><span>Push the repository, turn on Pages and see your site live.</span></a></li>
+      <li><a href="{{root}}docs/pipeline/"><strong>How the pipeline works</strong><span>The workflow file, one section at a time.</span></a></li>
+      <li><a href="{{root}}docs/customization/"><strong>Customization</strong><span>Add pages, change the theme, use a custom domain.</span></a></li>
+      <li><a href="{{root}}docs/troubleshooting/"><strong>Troubleshooting</strong><span>Fixes for the errors you are most likely to see.</span></a></li>
+      <li><a href="{{root}}docs/faq/"><strong>FAQ</strong><span>Private repositories, rollbacks, frameworks and more.</span></a></li>
+    </ul>
 
-    <h2 id="local-preview">Local preview</h2>
-    <pre><code>npm run build
-npm test
-npm run serve</code></pre>
+    <h2 id="when-it-runs">When the workflow runs</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Event</th><th>Build and test</th><th>Deploy</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Pull request to <code>main</code></td><td>Yes</td><td>No</td></tr>
+          <tr><td>Push to <code>main</code></td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>Manual run from the Actions tab</td><td>Yes</td><td>Yes</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-    <h2 id="deploying">Deploying</h2>
-    <p>Pull requests run the build and tests only. Pushes to <code>main</code> also deploy to GitHub Pages.</p>
+    <h2 id="commands">Commands</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Command</th><th>What it does</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>npm run build</code></td><td>Builds <code>site/</code> into <code>dist/</code></td></tr>
+          <tr><td><code>npm test</code></td><td>Checks the pages in <code>dist/</code></td></tr>
+          <tr><td><code>npm run check</code></td><td>Builds, then tests</td></tr>
+          <tr><td><code>npm start</code></td><td>Builds, then serves <code>dist/</code> on your machine</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <nav class="page-nav" aria-label="Pages">
+      <a class="next" href="{{root}}docs/getting-started/"><small>Next</small>Getting started</a>
+    </nav>
   </main>
 
-  <footer class="site-footer">
-    <p><a href="../">Back to home</a></p>
-  </footer>
+  <aside class="docs-toc" id="toc" aria-label="On this page"></aside>
+</div>
+
+<!-- @include footer -->
 </body>
 </html>

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- @include head -->
+  <title>Customization - Pages Starter</title>
+  <meta name="description" content="Change the content, add pages, adjust the theme and fonts, use a custom domain and extend the tests.">
+</head>
+<body>
+<!-- @include header -->
+
+<div class="docs">
+  <!-- @include docs-nav -->
+
+  <main id="main" class="docs-content">
+    <h1>Customization</h1>
+    <p class="lede">The site is a folder of HTML, one stylesheet and one small script. Change whatever you like.</p>
+
+    <h2 id="content">Change the content</h2>
+    <p>Everything you publish lives in <code>site/</code>. Edit the pages there, then build and test.</p>
+<pre><code>npm run check</code></pre>
+
+    <h2 id="partials">Shared layout with partials</h2>
+    <p>The head, header, footer and documentation menu are written once in <code>site/partials/</code> and pulled into each page at build time. Change a partial and every page updates.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Partial</th><th>Contains</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>head</code></td><td>Charset, viewport, icon, stylesheet and the theme script</td></tr>
+          <tr><td><code>header</code></td><td>Brand, main navigation, theme and menu buttons</td></tr>
+          <tr><td><code>footer</code></td><td>Footer links and the site script</td></tr>
+          <tr><td><code>docs-nav</code></td><td>The menu beside documentation pages</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="placeholders">Placeholders</h3>
+    <p>The build replaces two placeholders in every page and partial.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Placeholder</th><th>Becomes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>&#123;&#123;root&#125;&#125;</code></td><td>The relative path back to the site root: <code>./</code> on the home page, <code>../</code> one folder down, <code>../../</code> two down</td></tr>
+          <tr><td><code>&#123;&#123;base&#125;&#125;</code></td><td>The path the site is served from, such as <code>/my-repo</code>. Only <code>404.html</code> uses it</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Write every internal link as <code>&#123;&#123;root&#125;&#125;</code> followed by the path, for example <code>&#123;&#123;root&#125;&#125;docs/faq/</code>. That keeps the site working under <code>/repo/</code> and on a custom domain.</p>
+
+    <h2 id="add-a-page">Add a page</h2>
+    <ol class="steps">
+      <li>
+        <strong>Create the file</strong>
+        <p>Make <code>site/about/index.html</code>. A folder with an <code>index.html</code> gives you a clean address, <code>/about/</code>.</p>
+      </li>
+      <li>
+        <strong>Start from this skeleton</strong>
+<pre><code>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;!-- @include head --&gt;
+  &lt;title&gt;About - My Site&lt;/title&gt;
+  &lt;meta name="description" content="Who we are."&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;!-- @include header --&gt;
+&lt;main id="main"&gt;
+  &lt;div class="bar"&gt;
+    &lt;h1&gt;About&lt;/h1&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;!-- @include footer --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </li>
+      <li>
+        <strong>Link to it</strong>
+        <p>Add a link in <code>site/partials/header.html</code>. For a documentation page, add it to <code>docs-nav.html</code> instead and copy the layout from any page in <code>site/docs/</code>.</p>
+      </li>
+    </ol>
+
+    <h2 id="theme">Colors and type</h2>
+    <p>The design tokens sit at the top of <code>site/style.css</code>: <code>--paper</code> for the page, <code>--surface</code> for raised areas, <code>--ink</code> for text, <code>--muted</code> for secondary text, <code>--line</code> for borders and <code>--action</code> for links and buttons.</p>
+    <p>The dark theme repeats the same tokens twice. One copy applies when the visitor's system prefers dark. The other applies when they pick dark with the theme button. Change both so the two paths match.</p>
+    <div class="note">
+      <strong>Check contrast after changing colors</strong>
+      <p>Body text needs a contrast ratio of at least 4.5 to 1 against its background. Check <code>--muted</code> and <code>--action</code> in both themes.</p>
+    </div>
+
+    <h3 id="fonts">Fonts</h3>
+    <p>Bricolage Grotesque and JetBrains Mono are stored in <code>site/fonts/</code> with their licenses. To swap them, add your font files, update the two <code>@font-face</code> rules and the <code>--font-body</code> and <code>--font-mono</code> tokens, and update the preload line in <code>partials/head.html</code>.</p>
+
+    <h2 id="custom-domain">Use a custom domain</h2>
+    <ol class="steps">
+      <li>
+        <strong>Add a CNAME file</strong>
+        <p>Create <code>site/CNAME</code> containing your domain on a single line, for example <code>docs.example.com</code>. The build copies it into <code>dist/</code>.</p>
+      </li>
+      <li>
+        <strong>Set the domain in GitHub</strong>
+        <p>Open <em>Settings</em>, then <em>Pages</em>, and enter the domain under <em>Custom domain</em>.</p>
+      </li>
+      <li>
+        <strong>Point your DNS at GitHub</strong>
+        <p>Follow GitHub's instructions for the type of domain you use. Turn on <em>Enforce HTTPS</em> once the certificate is ready.</p>
+      </li>
+    </ol>
+    <p>No other change is needed. Links are relative, and the workflow reads the new path from Pages automatically.</p>
+
+    <h2 id="tests">Add your own checks</h2>
+    <p><code>scripts/test.mjs</code> collects problems with a small <code>fail(message)</code> function and exits with an error if any were reported. To add a check, loop over the pages and call <code>fail</code> when something is wrong. For example, to require a meta description on every page:</p>
+<pre><code>if (!/&lt;meta[^&gt;]*name=["']description["']/i.test(html)) {
+  fail(`${rel}: missing meta description`);
+}</code></pre>
+    <p>Put it inside the loop that already reads each page, next to the title check.</p>
+
+    <h2 id="node-version">Change the Node version</h2>
+    <p>Edit <code>node-version</code> in <code>.github/workflows/deploy.yml</code> and <code>engines</code> in <code>package.json</code>. The scripts use only built-in Node modules, so any current release works.</p>
+
+    <nav class="page-nav" aria-label="Pages">
+      <a href="{{root}}docs/pipeline/"><small>Previous</small>How the pipeline works</a>
+      <a class="next" href="{{root}}docs/troubleshooting/"><small>Next</small>Troubleshooting</a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc" id="toc" aria-label="On this page"></aside>
+</div>
+
+<!-- @include footer -->
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- @include head -->
+  <title>Troubleshooting - Pages Starter</title>
+  <meta name="description" content="Fixes for the most common problems when deploying a static site to GitHub Pages with GitHub Actions.">
+</head>
+<body>
+<!-- @include header -->
+
+<div class="docs">
+  <!-- @include docs-nav -->
+
+  <main id="main" class="docs-content">
+    <h1>Troubleshooting</h1>
+    <p class="lede">Find the symptom, then follow the fix. Most problems come down to one setting or one broken link.</p>
+
+    <h2 id="pages-not-enabled">The run fails at "Configure Pages"</h2>
+    <p>The log shows an error that starts with <em>Get Pages site failed</em>. Pages isn't set up to use GitHub Actions yet.</p>
+    <p><strong>Fix:</strong> open <em>Settings</em>, then <em>Pages</em>, and set <em>Source</em> to <em>GitHub Actions</em>. Then re-run the failed workflow from the <em>Actions</em> tab.</p>
+
+    <h2 id="permission-errors">"Resource not accessible by integration"</h2>
+    <p>The workflow doesn't have permission to publish. This usually means the <code>permissions</code> block was removed or the repository restricts workflow permissions.</p>
+    <p><strong>Fix:</strong> keep <code>pages: write</code> and <code>id-token: write</code> in the workflow. Then check <em>Settings</em>, <em>Actions</em>, <em>General</em>, <em>Workflow permissions</em> and make sure nothing blocks the workflow from running.</p>
+
+    <h2 id="environment-protection">Deployment blocked by environment rules</h2>
+    <p>The deploy job fails and says the branch isn't allowed to deploy to the <code>github-pages</code> environment.</p>
+    <p><strong>Fix:</strong> open <em>Settings</em>, then <em>Environments</em>, then <em>github-pages</em>. Under <em>Deployment branches and tags</em>, allow <code>main</code>, or remove the restriction.</p>
+
+    <h2 id="tests-fail">A test fails</h2>
+    <p>The <em>Test site</em> step lists every problem it found, one per line, each starting with the page it came from.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Message</th><th>What to do</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>broken link</code></td><td>The target file doesn't exist. Check the spelling, or create the page</td></tr>
+          <tr><td><code>broken anchor</code></td><td>The page exists but has no element with that id. Add the id or fix the link</td></tr>
+          <tr><td><code>missing or empty &lt;title&gt;</code></td><td>Give the page a title in its <code>&lt;head&gt;</code></td></tr>
+          <tr><td><code>expected exactly one &lt;h1&gt;</code></td><td>Use one top-level heading per page</td></tr>
+          <tr><td><code>image is missing alt text</code></td><td>Add an <code>alt</code> attribute. Use <code>alt=""</code> for purely decorative images</td></tr>
+          <tr><td><code>unexpanded placeholder</code></td><td>A partial name is misspelled, or a placeholder was typed in a way the build doesn't recognize</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Run <code>npm run check</code> on your machine to reproduce the failure before you push again.</p>
+
+    <h2 id="not-deploying">The site didn't update</h2>
+    <ul>
+      <li><strong>Did you push to <code>main</code>?</strong> Pull requests build and test but never deploy.</li>
+      <li><strong>Did the run pass?</strong> A failed test or build stops the deploy job.</li>
+      <li><strong>Is the old page cached?</strong> Hard-refresh with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>. GitHub's servers can also take a minute to catch up after a deploy.</li>
+    </ul>
+
+    <h2 id="styles-missing">The page loads without styles</h2>
+    <p>The HTML loads but the stylesheet or fonts return a 404 error. This almost always means a link starts with <code>/</code>. On a project page the site lives at <code>/repo/</code>, so <code>/style.css</code> points to the wrong place.</p>
+    <p><strong>Fix:</strong> write internal links with the root placeholder, as in <code>&#123;&#123;root&#125;&#125;style.css</code>, instead of a leading slash. The <a href="{{root}}docs/customization/#placeholders">customization guide</a> explains how it works.</p>
+
+    <h2 id="not-found">A 404 page for an address that should exist</h2>
+    <ul>
+      <li>Addresses are case-sensitive on GitHub Pages. <code>/Docs/</code> and <code>/docs/</code> are different.</li>
+      <li>A page at <code>site/about/index.html</code> is served at <code>/about/</code>. A file named <code>site/about.html</code> is served at <code>/about.html</code>.</li>
+      <li>Check that the file is inside <code>site/</code>. Anything outside it isn't published.</li>
+    </ul>
+
+    <h2 id="private-repo">Pages is missing from Settings</h2>
+    <p>On a free GitHub account, Pages is only available for public repositories. Make the repository public, or move to a plan that supports Pages on private repositories.</p>
+
+    <nav class="page-nav" aria-label="Pages">
+      <a href="{{root}}docs/customization/"><small>Previous</small>Customization</a>
+      <a class="next" href="{{root}}docs/faq/"><small>Next</small>FAQ</a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc" id="toc" aria-label="On this page"></aside>
+</div>
+
+<!-- @include footer -->
+</body>
+</html>

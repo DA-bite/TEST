@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- @include head -->
+  <title>FAQ - Pages Starter</title>
+  <meta name="description" content="Answers to common questions about private repositories, rollbacks, frameworks, custom domains, cost and accessibility.">
+</head>
+<body>
+<!-- @include header -->
+
+<div class="docs">
+  <!-- @include docs-nav -->
+
+  <main id="main" class="docs-content">
+    <h1>FAQ</h1>
+    <p class="lede">Short answers to the questions that come up most.</p>
+
+    <details>
+      <summary>Can I use a private repository?</summary>
+      <p>Only on a paid GitHub plan. On a free account, GitHub Pages is available for public repositories. Your site is public either way once it's published.</p>
+    </details>
+
+    <details>
+      <summary>Does it cost anything?</summary>
+      <p>Public repositories get GitHub Actions minutes at no charge, and Pages is free for them. Plans and limits change, so check GitHub's current pricing page for the details that apply to you.</p>
+    </details>
+
+    <details>
+      <summary>How do I roll back a bad deploy?</summary>
+      <p>Revert the commit and push. The workflow runs again and publishes the previous version.</p>
+<pre><code>git revert HEAD
+git push</code></pre>
+    </details>
+
+    <details>
+      <summary>Can I deploy from a branch other than main?</summary>
+      <p>Yes. Change the branch name under <code>push</code> and <code>pull_request</code> in <code>.github/workflows/deploy.yml</code>. Also allow that branch in <em>Settings</em>, <em>Environments</em>, <em>github-pages</em>.</p>
+    </details>
+
+    <details>
+      <summary>Can I use a static site generator or a bundler?</summary>
+      <p>Yes. The workflow only needs <code>npm run build</code> to put the finished site in <code>dist/</code>. Replace the build script with your generator's command, add an install step to the workflow if you have dependencies, and keep the output folder as <code>dist</code>. The tests keep working on whatever ends up there.</p>
+    </details>
+
+    <details>
+      <summary>Can I use a custom domain?</summary>
+      <p>Yes. Add a <code>CNAME</code> file to <code>site/</code> and set the domain in Pages settings. The <a href="{{root}}docs/customization/#custom-domain">customization guide</a> has the steps.</p>
+    </details>
+
+    <details>
+      <summary>Does the site work without JavaScript?</summary>
+      <p>Yes. Every page is plain HTML. The script only adds the theme button, copy buttons on code blocks, the mobile menu, the contents list beside documentation and the animation on the home page.</p>
+    </details>
+
+    <details>
+      <summary>Where do the fonts come from?</summary>
+      <p>They are stored in <code>site/fonts/</code> and served with the site, so visitors don't contact a third-party font server. Both fonts are licensed under the SIL Open Font License, and the license files sit next to them.</p>
+    </details>
+
+    <details>
+      <summary>Why is there no watch mode?</summary>
+      <p>The build takes a moment and touches only a few files, so a watcher would add a dependency for little gain. Run <code>npm start</code> again after an edit. If you want live reload, add a tool such as a file watcher and call <code>npm run build</code> from it.</p>
+    </details>
+
+    <details>
+      <summary>How do I report a problem or suggest a change?</summary>
+      <p>Open an issue in the <a href="https://github.com/DA-bite/TEST/issues" rel="noopener">GitHub repository</a>.</p>
+    </details>
+
+    <nav class="page-nav" aria-label="Pages">
+      <a href="{{root}}docs/troubleshooting/"><small>Previous</small>Troubleshooting</a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc" id="toc" aria-label="On this page"></aside>
+</div>
+
+<!-- @include footer -->
+</body>
+</html>

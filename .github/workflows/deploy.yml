@@ -13,9 +13,10 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one deployment at a time; don't cancel one that's in progress.
+# One run per branch or pull request at a time. A run that is already
+# deploying is never cancelled halfway.
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -31,15 +32,22 @@ jobs:
         with:
           node-version: 20
 
+      # Reads the Pages settings, including the path the site is served from
+      # (for example /my-repo). Skipped on pull requests, which never deploy.
+      - name: Configure Pages
+        id: pages
+        if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+
       - name: Build site
         run: npm run build
+        env:
+          SITE_BASE: ${{ steps.pages.outputs.base_path }}
 
       - name: Test site
         run: npm test
-
-      - name: Configure Pages
-        if: github.event_name != 'pull_request'
-        uses: actions/configure-pages@v5
+        env:
+          SITE_BASE: ${{ steps.pages.outputs.base_path }}
 
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request'

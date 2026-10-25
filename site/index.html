@@ -1,29 +1,189 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Project</title>
-  <meta name="description" content="A static site deployed to GitHub Pages with GitHub Actions.">
-  <link rel="stylesheet" href="style.css">
+  <!-- @include head -->
+  <title>Pages Starter: push to main, your site is live</title>
+  <meta name="description" content="A starter for plain HTML and CSS sites. GitHub Actions builds it, tests it and publishes it to GitHub Pages on every push to main.">
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="./">My Project</a>
-    <nav>
-      <a href="./">Home</a>
-      <a href="docs/">Docs</a>
-    </nav>
-  </header>
+<!-- @include header -->
 
-  <main>
-    <h1>Welcome</h1>
-    <p>This site is built, tested and deployed automatically by GitHub Actions every time you push to <code>main</code>.</p>
-    <p><a class="button" href="docs/">Read the docs</a></p>
-  </main>
+<main id="main">
+  <section class="hero">
+    <div class="bar">
+      <div>
+        <span class="chip">Static sites on GitHub Pages</span>
+        <h1>Push to main. Your site is live.</h1>
+        <p class="hero-lede">A starter for plain HTML and CSS sites. GitHub Actions builds it, tests it and publishes it for you.</p>
+        <div class="btn-row">
+          <a class="btn" href="{{root}}docs/getting-started/">Get started</a>
+          <a class="btn btn-ghost" href="{{root}}docs/pipeline/">See how it works</a>
+        </div>
+      </div>
 
-  <footer class="site-footer">
-    <p>Built with plain HTML and CSS.</p>
-  </footer>
+      <div class="run" role="group" aria-label="Example workflow run">
+        <div class="run-head">
+          <strong>Deploy to GitHub Pages</strong>
+          <span>Example run on main</span>
+        </div>
+        <ol class="run-steps">
+          <li class="run-step" data-state="done">
+            <svg class="run-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M6.2 10.3l2.5 2.5 5-5.2"/></svg>
+            <span>Build<small>npm run build</small></span>
+            <span class="run-time">3s</span>
+          </li>
+          <li class="run-step" data-state="done">
+            <svg class="run-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M6.2 10.3l2.5 2.5 5-5.2"/></svg>
+            <span>Test<small>links, anchors, titles, alt text</small></span>
+            <span class="run-time">2s</span>
+          </li>
+          <li class="run-step" data-state="done">
+            <svg class="run-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M6.2 10.3l2.5 2.5 5-5.2"/></svg>
+            <span>Deploy<small>actions/deploy-pages</small></span>
+            <span class="run-time">12s</span>
+          </li>
+        </ol>
+        <div class="run-foot">
+          <span data-run-status>Passed</span>
+          <span class="live">Live at your Pages URL</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="pipeline-title">
+    <div class="bar">
+      <div class="section-head">
+        <h2 id="pipeline-title">What happens after you push</h2>
+        <p>Four stages, in order. If one fails, the ones after it don't run.</p>
+      </div>
+
+      <ol class="rail">
+        <li class="stage">
+          <span class="stage-node" aria-hidden="true">
+            <svg viewBox="0 0 20 20" width="20" height="20"><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <h3>Push</h3>
+          <div class="stage-body">
+            <p>Commit your changes to <code>main</code>. A pull request runs the build and tests without deploying, so you can review a change before it goes live.</p>
+<pre><code>git add .
+git commit -m "Update the docs"
+git push origin main</code></pre>
+          </div>
+        </li>
+
+        <li class="stage">
+          <span class="stage-node" aria-hidden="true">
+            <svg viewBox="0 0 20 20" width="20" height="20"><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <h3>Build</h3>
+          <div class="stage-body">
+            <p>A short Node script copies <code>site/</code> to <code>dist/</code>, fills in the shared header and footer, and makes every path relative. There is nothing to install.</p>
+<pre><code>npm run build</code></pre>
+          </div>
+        </li>
+
+        <li class="stage">
+          <span class="stage-node" aria-hidden="true">
+            <svg viewBox="0 0 20 20" width="20" height="20"><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <h3>Test</h3>
+          <div class="stage-body">
+            <p>The tests read the built pages and fail the run if something is broken. A failure here means nothing gets published.</p>
+            <ul class="checks">
+              <li>Every internal link, image, stylesheet and script resolves</li>
+              <li>Every <code>#anchor</code> points to a real heading or id</li>
+              <li>Each page has a title, language, viewport tag and one <code>h1</code></li>
+              <li>Images have alt text and ids are unique</li>
+              <li>No unexpanded placeholders are left behind</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="stage">
+          <span class="stage-node" aria-hidden="true">
+            <svg viewBox="0 0 20 20" width="20" height="20"><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <h3>Deploy</h3>
+          <div class="stage-body">
+            <p>The <code>dist/</code> folder is uploaded as a Pages artifact and published with GitHub's own actions. The run summary links straight to the live site.</p>
+<pre data-no-copy><code>https://&lt;user&gt;.github.io/&lt;repo&gt;/</code></pre>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="facts-title">
+    <div class="bar">
+      <div class="section-head">
+        <h2 id="facts-title">Built to stay out of your way</h2>
+      </div>
+      <dl class="facts">
+        <div>
+          <dt>No dependencies</dt>
+          <dd>Node 20 and the files in this repository. There is nothing to install and nothing to keep updated.</dd>
+        </div>
+        <div>
+          <dt>Works under any path</dt>
+          <dd>Links are relative, so the site runs at <code>/repo/</code> on a project page and at the root of a custom domain.</dd>
+        </div>
+        <div>
+          <dt>Safe pull requests</dt>
+          <dd>Pull requests build and test but never deploy. Only <code>main</code> publishes.</dd>
+        </div>
+        <div>
+          <dt>Readable by default</dt>
+          <dd>Light and dark themes, visible keyboard focus, a skip link and support for reduced motion.</dd>
+        </div>
+        <div>
+          <dt>Fonts that ship with the site</dt>
+          <dd>Bricolage Grotesque and JetBrains Mono are served from this repository, so visitors never hit a third-party font server.</dd>
+        </div>
+        <div>
+          <dt>Two scripts you can read</dt>
+          <dd><code>build.mjs</code> and <code>test.mjs</code> are short enough to read in one sitting and change when you need to.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="repo-title">
+    <div class="bar split">
+      <div class="section-head" style="margin-bottom:0">
+        <h2 id="repo-title">What's in the repository</h2>
+        <p>Your content lives in <code>site/</code>. Everything else is plumbing you can leave alone until you need it.</p>
+        <p><a href="{{root}}docs/customization/">Customize the site</a></p>
+      </div>
+<pre class="tree" data-no-copy><code>.
+├── site/                  Pages, styles and fonts
+│   ├── index.html
+│   ├── docs/              Documentation
+│   ├── partials/          Shared head, header, footer
+│   ├── fonts/
+│   ├── style.css
+│   └── main.js
+├── scripts/
+│   ├── build.mjs          Turns site/ into dist/
+│   └── test.mjs           Checks the built pages
+├── .github/workflows/
+│   └── deploy.yml         Build, test and deploy
+└── package.json</code></pre>
+    </div>
+  </section>
+
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="bar">
+      <h2 id="cta-title">Publish your first page</h2>
+      <p>Push the repository, switch Pages to GitHub Actions, and wait for the green check.</p>
+      <div class="btn-row">
+        <a class="btn" href="{{root}}docs/getting-started/">Read the setup guide</a>
+        <a class="btn btn-ghost" href="{{root}}docs/faq/">Common questions</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- @include footer -->
 </body>
 </html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- @include head -->
+  <title>How the pipeline works - Pages Starter</title>
+  <meta name="description" content="The GitHub Actions workflow behind the site, explained one section at a time: triggers, permissions, the build and test job, and the deploy job.">
+</head>
+<body>
+<!-- @include header -->
+
+<div class="docs">
+  <!-- @include docs-nav -->
+
+  <main id="main" class="docs-content">
+    <h1>How the pipeline works</h1>
+    <p class="lede">One workflow file does everything. This page walks through <code>.github/workflows/deploy.yml</code> in the order it runs.</p>
+
+    <h2 id="overview">The shape of it</h2>
+    <p>The workflow has two jobs. <strong>Build and test</strong> checks out the code, builds the site, tests it and uploads the result. <strong>Deploy</strong> takes that upload and publishes it. Deploy waits for the first job, so a failing test means nothing is published.</p>
+
+    <h2 id="triggers">Triggers</h2>
+<pre><code>on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:</code></pre>
+    <p>A push to <code>main</code> runs the full pipeline. A pull request aimed at <code>main</code> runs the build and tests so you see problems before merging. <code>workflow_dispatch</code> adds a <em>Run workflow</em> button on the Actions tab, which is useful for redeploying without a new commit.</p>
+
+    <h2 id="permissions">Permissions</h2>
+<pre><code>permissions:
+  contents: read
+  pages: write
+  id-token: write</code></pre>
+    <p><code>contents: read</code> lets the job read the repository. <code>pages: write</code> and <code>id-token: write</code> let the deploy job publish to Pages and prove who it is. Nothing here can change your code.</p>
+
+    <h2 id="concurrency">Concurrency</h2>
+<pre><code>concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false</code></pre>
+    <p>Runs on the same branch queue up instead of running at once, and a deployment that has started is never cancelled halfway. Pull requests have their own group, so a review build never waits behind a deploy.</p>
+
+    <h2 id="build-job">The build and test job</h2>
+    <p>These steps run in order. If one fails, the rest are skipped.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Step</th><th>What it does</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>actions/checkout@v4</code></td><td>Downloads the repository</td></tr>
+          <tr><td><code>actions/setup-node@v4</code></td><td>Installs Node 20</td></tr>
+          <tr><td><code>actions/configure-pages@v5</code></td><td>Reads the Pages settings and exposes the path the site is served from. Skipped on pull requests</td></tr>
+          <tr><td><code>npm run build</code></td><td>Turns <code>site/</code> into <code>dist/</code></td></tr>
+          <tr><td><code>npm test</code></td><td>Checks every page in <code>dist/</code></td></tr>
+          <tr><td><code>actions/upload-pages-artifact@v3</code></td><td>Packages <code>dist/</code> for deployment. Skipped on pull requests</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="site-base">Why the build needs the Pages path</h3>
+<pre><code>- name: Build site
+  run: npm run build
+  env:
+    SITE_BASE: ${{ steps.pages.outputs.base_path }}</code></pre>
+    <p>Every page uses relative links, which work from any folder. The one exception is <code>404.html</code>. GitHub serves it for any missing address, however deep, so relative links would point at the wrong place. The build writes the real path, such as <code>/my-repo</code>, into that one file. On a custom domain the path is empty and the links start at <code>/</code>.</p>
+
+    <h2 id="deploy-job">The deploy job</h2>
+<pre><code>deploy:
+  if: github.event_name != 'pull_request'
+  needs: build
+  environment:
+    name: github-pages
+    url: ${{ steps.deployment.outputs.page_url }}
+  steps:
+    - id: deployment
+      uses: actions/deploy-pages@v4</code></pre>
+    <p><code>needs: build</code> holds the job until the first one passes. The <code>if</code> line keeps pull requests from publishing. The <code>github-pages</code> environment is how GitHub records deployments, and the <code>url</code> line puts the live address on the run summary.</p>
+
+    <h2 id="what-the-tests-check">What the tests check</h2>
+    <p><code>scripts/test.mjs</code> reads every HTML file in <code>dist/</code> and reports all the problems it finds in one go, so you can fix them together.</p>
+    <ul>
+      <li>The required files exist: <code>index.html</code>, <code>404.html</code> and <code>.nojekyll</code>.</li>
+      <li>Each page starts with a doctype and has a <code>lang</code> attribute, a charset, a viewport tag, a non-empty title and exactly one <code>h1</code>.</li>
+      <li>Ids are unique within a page.</li>
+      <li>Images have an <code>alt</code> attribute.</li>
+      <li>Every relative link, image, stylesheet and script points to a file that exists.</li>
+      <li>Every <code>#anchor</code> points to an id on the page it names, including links to other pages.</li>
+      <li>No <code>&#123;&#123;root&#125;&#125;</code>, <code>&#123;&#123;base&#125;&#125;</code> or include markers are left in the output.</li>
+    </ul>
+    <p>External links such as <code>https://github.com</code> are not fetched. A flaky network shouldn't block a deploy.</p>
+
+    <nav class="page-nav" aria-label="Pages">
+      <a href="{{root}}docs/getting-started/"><small>Previous</small>Getting started</a>
+      <a class="next" href="{{root}}docs/customization/"><small>Next</small>Customization</a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc" id="toc" aria-label="On this page"></aside>
+</div>
+
+<!-- @include footer -->
+</body>
+</html>

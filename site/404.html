@@ -3,13 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Page not found - My Project</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="color-scheme" content="light dark">
+  <meta name="robots" content="noindex">
+  <title>Page not found - Pages Starter</title>
+  <meta name="description" content="This page doesn't exist or has moved.">
+  <link rel="icon" href="{{base}}/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="{{base}}/style.css">
 </head>
 <body>
-  <main>
-    <h1>Page not found</h1>
-    <p>That page doesn't exist. <a href="./">Go back home</a>.</p>
-  </main>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="{{base}}/">
+      <svg class="brand-mark" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor"/>
+        <path d="M7 12.5l3.2 3.2L17 8.8" fill="none" stroke="var(--paper)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Pages Starter</span>
+    </a>
+  </div>
+</header>
+
+<main id="main" class="lost">
+  <div class="bar">
+    <h1>Nothing here.</h1>
+    <p>This address doesn't match a page on the site. It may have been renamed or removed.</p>
+    <div class="btn-row">
+      <a class="btn" href="{{base}}/">Go to the home page</a>
+      <a class="btn btn-ghost" href="{{base}}/docs/">Browse the docs</a>
+    </div>
+  </div>
+</main>
 </body>
 </html>

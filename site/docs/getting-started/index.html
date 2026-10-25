@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- @include head -->
+  <title>Getting started - Pages Starter</title>
+  <meta name="description" content="Push the repository to GitHub, switch Pages to GitHub Actions and open your live site.">
+</head>
+<body>
+<!-- @include header -->
+
+<div class="docs">
+  <!-- @include docs-nav -->
+
+  <main id="main" class="docs-content">
+    <h1>Getting started</h1>
+    <p class="lede">Get from an empty GitHub repository to a live site. Most of the work is one setting.</p>
+
+    <h2 id="before-you-begin">Before you begin</h2>
+    <ul>
+      <li>A GitHub account and a repository to publish from.</li>
+      <li>Git on your machine.</li>
+      <li>Node 20 or newer, only if you want to preview the site locally. GitHub installs Node itself when the workflow runs.</li>
+    </ul>
+    <div class="note">
+      <strong>Use a public repository</strong>
+      <p>GitHub Pages on a private repository needs a paid GitHub plan. On a free account, make the repository public.</p>
+    </div>
+
+    <h2 id="publish">Publish the site</h2>
+    <ol class="steps">
+      <li>
+        <strong>Create an empty repository</strong>
+        <p>On GitHub, create a repository with no README, license or <code>.gitignore</code>. An empty repository means your first push can't conflict with anything.</p>
+      </li>
+      <li>
+        <strong>Push the code</strong>
+        <p>From the project folder, point Git at your repository and push <code>main</code>.</p>
+<pre><code>git init -b main
+git add .
+git commit -m "Add site"
+git remote add origin https://github.com/&lt;user&gt;/&lt;repo&gt;.git
+git push -u origin main</code></pre>
+      </li>
+      <li>
+        <strong>Switch Pages to GitHub Actions</strong>
+        <p>In the repository, open <em>Settings</em>, then <em>Pages</em>. Under <em>Build and deployment</em>, set <em>Source</em> to <em>GitHub Actions</em>. This is the step people miss. Until it is set, the workflow fails when it tries to configure Pages.</p>
+      </li>
+      <li>
+        <strong>Run the workflow again if it already failed</strong>
+        <p>Open the <em>Actions</em> tab, choose the failed run and select <em>Re-run all jobs</em>. You can also push any new commit.</p>
+      </li>
+      <li>
+        <strong>Open the site</strong>
+        <p>When the run turns green, the deploy job shows the live URL. It follows this pattern:</p>
+<pre data-no-copy><code>https://&lt;user&gt;.github.io/&lt;repo&gt;/</code></pre>
+      </li>
+    </ol>
+
+    <h2 id="check-the-run">Check the run</h2>
+    <p>Each push creates a run on the <em>Actions</em> tab with two jobs. <strong>Build and test</strong> produces the site and checks it. <strong>Deploy to GitHub Pages</strong> publishes it and only starts after the first job passes. If either job fails, open it to read the log. The <a href="{{root}}docs/troubleshooting/">troubleshooting guide</a> covers the common failures.</p>
+
+    <h2 id="preview-locally">Preview locally</h2>
+    <p>Build and serve the site on your machine before you push.</p>
+<pre><code>npm start</code></pre>
+    <p>The page opens at the address printed in the terminal, usually <code>http://localhost:3000</code>. Run <code>npm run check</code> to build and test without starting a server. The site is plain files, so there is no watch mode. Run the build again after you edit a page.</p>
+
+    <h2 id="make-a-change">Make your first change</h2>
+    <p>Edit <code>site/index.html</code>, commit and push. A minute or two later the change is live.</p>
+<pre><code>git add .
+git commit -m "Change the headline"
+git push</code></pre>
+
+    <nav class="page-nav" aria-label="Pages">
+      <a href="{{root}}docs/"><small>Previous</small>Overview</a>
+      <a class="next" href="{{root}}docs/pipeline/"><small>Next</small>How the pipeline works</a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc" id="toc" aria-label="On this page"></aside>
+</div>
+
+<!-- @include footer -->
+</body>
+</html>
